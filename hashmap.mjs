@@ -110,4 +110,14 @@ function hashMap() {
     }
     return false;
   }
+
+  function length() {
+    let entries = 0;
+    hashTable.forEach((bucket) => {
+      for (let i = 0; i < bucket.size(); i++) {
+        entries++;
+      }
+    });
+    return entries;
+  }
 }
