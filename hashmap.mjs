@@ -120,4 +120,8 @@ function hashMap() {
     });
     return entries;
   }
+
+  function clear() {
+    hashTable = Array(hashTable.length);
+  }
 }
