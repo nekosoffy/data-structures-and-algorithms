@@ -57,8 +57,9 @@ export default function createLinkedList() {
   }
 
   function at(index) {
+    const listSize = size();
     if (
-      (index > size() - 1 && size() > 0) ||
+      (index > listSize - 1 && listSize > 0) ||
       index < 0 ||
       !Number.isInteger(index)
     ) {
@@ -111,7 +112,10 @@ export default function createLinkedList() {
     let index = 0;
 
     while (currentNode !== null) {
-      if (currentNode.value === value) {
+      if (
+        currentNode.value === value ||
+        (Array.isArray(currentNode.value) && currentNode.value.includes(value))
+      ) {
         return index;
       }
 
@@ -151,11 +155,12 @@ export default function createLinkedList() {
 
     const newNode = createNode();
     newNode.value = value;
+    const listSize = size();
 
     if (index === 0) {
       newNode.nextNode = at(index);
       firstNode = newNode;
-    } else if (index === size() - 1) {
+    } else if (index === listSize - 1) {
       at(index - 1).nextNode = newNode;
       lastNode = newNode;
     } else {
@@ -165,8 +170,9 @@ export default function createLinkedList() {
   }
 
   function removeAt(index) {
+    const listSize = size();
     if (
-      (index > size() - 1 && size() > 0) ||
+      (index > listSize - 1 && listSize > 0) ||
       index < 0 ||
       !Number.isInteger(index)
     ) {
@@ -174,9 +180,11 @@ export default function createLinkedList() {
       return;
     }
 
-    if (index === 0) {
+    if (index === 0 && listSize === 1) {
+      firstNode = null;
+    } else if (index === 0 && listSize > 1) {
       firstNode = at(index + 1);
-    } else if (index === size() - 1) {
+    } else if (index === listSize - 1) {
       lastNode = at(index - 1);
       lastNode.nextNode = null;
     } else {
