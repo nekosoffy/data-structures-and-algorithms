@@ -30,10 +30,7 @@ function hashMap() {
       if (indexOfNodeWithSameKey !== null) {
         list.removeAt(indexOfNodeWithSameKey);
         list.insertAt([key, value], indexOfNodeWithSameKey);
-        inserted = true;
-      }
-
-      if (inserted === false) {
+      } else {
         list.append([key, value]);
       }
 
