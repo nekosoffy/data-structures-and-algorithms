@@ -16,41 +16,52 @@ function hashMap() {
     return hashCode;
   }
 
-  function set(key, value) {
-    const hashCode = hash(key);
-    if (hashTable[hashCode] === undefined) {
-      const list = createLinkedList();
-      list.append([key, value]);
-      hashTable[hashCode] = list;
-    } else {
-      const list = hashTable[hashCode];
-      const indexOfNodeWithSameKey = list.find(key);
-      let inserted = false;
-
-      if (indexOfNodeWithSameKey !== null) {
-        list.removeAt(indexOfNodeWithSameKey);
-        list.insertAt([key, value], indexOfNodeWithSameKey);
-      } else {
-        list.append([key, value]);
-      }
-
-      hashTable[hashCode] = list;
-      inserted = false;
-      checkHashTableGrowth();
-    }
-  }
-
   function checkHashTableGrowth() {
     const capacity = hashTable.length;
     const loadFactor = 0.75;
-    let entries = 0;
+    let entriesNumber = 0;
 
-    hashTable.forEach((el) => {
-      entries += el.size();
+    hashTable.forEach((bucket) => {
+      entriesNumber += bucket.size();
     });
 
-    if (entries === capacity * loadFactor) {
-      hashTable = hashTable.concat(Array(capacity));
+    if (entriesNumber === capacity * loadFactor) {
+      const entries = [];
+
+      hashTable.forEach((bucket) => {
+        for (let i = 0; i < bucket.size(); i++) {
+          entries.push(bucket.at(i).value);
+        }
+      });
+
+      hashTable = Array(capacity * 2);
+
+      entries.forEach((entry) => {
+        set(entry[0], entry[1]);
+      });
+    }
+  }
+
+  function set(key, value) {
+    checkHashTableGrowth();
+    const hashCode = hash(key);
+
+    if (hashTable[hashCode] === undefined) {
+      const bucket = createLinkedList();
+      bucket.append([key, value]);
+      hashTable[hashCode] = bucket;
+    } else {
+      const bucket = hashTable[hashCode];
+      const indexOfNodeWithSameKey = bucket.find(key);
+
+      if (indexOfNodeWithSameKey !== null) {
+        bucket.removeAt(indexOfNodeWithSameKey);
+        bucket.insertAt([key, value], indexOfNodeWithSameKey);
+      } else {
+        bucket.append([key, value]);
+      }
+
+      hashTable[hashCode] = bucket;
     }
   }
 }
