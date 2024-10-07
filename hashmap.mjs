@@ -64,4 +64,19 @@ function hashMap() {
       hashTable[hashCode] = bucket;
     }
   }
+
+  function get(key) {
+    let entryIndex;
+    let value;
+    for (const bucket of hashTable) {
+      if (bucket !== undefined) {
+        entryIndex = bucket.find(key);
+        if (entryIndex !== null) {
+          value = bucket.at(entryIndex).value[1];
+          break;
+        }
+      }
+    }
+    return entryIndex !== null ? value : null;
+  }
 }
