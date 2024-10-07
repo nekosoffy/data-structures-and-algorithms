@@ -124,4 +124,24 @@ function hashMap() {
   function clear() {
     hashTable = Array(hashTable.length);
   }
+
+  function keys() {
+    const keys = [];
+    hashTable.forEach((bucket) => {
+      for (let i = 0; i < bucket.size(); i++) {
+        keys.push(bucket.at(i).value[0]);
+      }
+    });
+    return keys;
+  }
+
+  function values() {
+    const values = [];
+    hashTable.forEach((bucket) => {
+      for (let i = 0; i < bucket.size(); i++) {
+        values.push(bucket.at(i).value[1]);
+      }
+    });
+    return values;
+  }
 }
