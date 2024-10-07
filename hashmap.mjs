@@ -72,11 +72,23 @@ function hashMap() {
       if (bucket !== undefined) {
         entryIndex = bucket.find(key);
         if (entryIndex !== null) {
-          value = bucket.at(entryIndex).value[1];
-          break;
+          return bucket.at(entryIndex).value[1];
         }
       }
     }
-    return entryIndex !== null ? value : null;
+    return null;
+  }
+
+  function has(key) {
+    let entryIndex;
+    for (const bucket of hashTable) {
+      if (bucket !== undefined) {
+        entryIndex = bucket.find(key);
+        if (entryIndex !== null) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
