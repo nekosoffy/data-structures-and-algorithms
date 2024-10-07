@@ -15,4 +15,17 @@ function hashMap() {
 
     return hashCode;
   }
+
+  function set(key, value) {
+    const hashCode = hash(key);
+    if (hashTable[hashCode] === undefined) {
+      const list = createLinkedList();
+      list.append([key, value]);
+      hashTable[hashCode] = list;
+    } else {
+      const list = hashTable[hashCode];
+      list.append([key, value]);
+      hashTable[hashCode] = list;
+    }
+  }
 }
