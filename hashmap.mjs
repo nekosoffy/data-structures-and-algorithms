@@ -91,4 +91,23 @@ function hashMap() {
     }
     return false;
   }
+
+  function remove(key) {
+    let entryIndex;
+    for (const bucket of hashTable) {
+      if (bucket !== undefined) {
+        entryIndex = bucket.find(key);
+        if (entryIndex !== null) {
+          bucket.removeAt(entryIndex);
+
+          if (bucket.head() === null) {
+            delete hashTable[hashTable.indexOf(bucket)];
+          }
+
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
