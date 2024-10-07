@@ -24,8 +24,21 @@ function hashMap() {
       hashTable[hashCode] = list;
     } else {
       const list = hashTable[hashCode];
-      list.append([key, value]);
+      const indexOfNodeWithSameKey = list.find(key);
+      let inserted = false;
+
+      if (indexOfNodeWithSameKey !== null) {
+        list.removeAt(indexOfNodeWithSameKey);
+        list.insertAt([key, value], indexOfNodeWithSameKey);
+        inserted = true;
+      }
+
+      if (inserted === false) {
+        list.append([key, value]);
+      }
+
       hashTable[hashCode] = list;
+      inserted = false;
     }
   }
 }
