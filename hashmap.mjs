@@ -39,6 +39,21 @@ function hashMap() {
 
       hashTable[hashCode] = list;
       inserted = false;
+      checkHashTableGrowth();
+    }
+  }
+
+  function checkHashTableGrowth() {
+    const capacity = hashTable.length;
+    const loadFactor = 0.75;
+    let entries = 0;
+
+    hashTable.forEach((el) => {
+      entries += el.size();
+    });
+
+    if (entries === capacity * loadFactor) {
+      hashTable = hashTable.concat(Array(capacity));
     }
   }
 }
