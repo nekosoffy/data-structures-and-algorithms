@@ -144,4 +144,14 @@ function hashMap() {
     });
     return values;
   }
+
+  function entries() {
+    const entries = [];
+    hashTable.forEach((bucket) => {
+      for (let i = 0; i < bucket.size(); i++) {
+        entries.push(bucket.at(i).value);
+      }
+    });
+    return entries;
+  }
 }
