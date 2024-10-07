@@ -57,7 +57,11 @@ export default function createLinkedList() {
   }
 
   function at(index) {
-    if (index > size() - 1 || index < 0 || !Number.isInteger(index)) {
+    if (
+      (index > size() - 1 && size() > 0) ||
+      index < 0 ||
+      !Number.isInteger(index)
+    ) {
       console.log('Invalid index.');
       return;
     }
@@ -140,7 +144,7 @@ export default function createLinkedList() {
   }
 
   function insertAt(value, index) {
-    if (index > size() - 1 || index < 0 || !Number.isInteger(index)) {
+    if (index < 0 || !Number.isInteger(index)) {
       console.log('Invalid index.');
       return;
     }
@@ -161,7 +165,11 @@ export default function createLinkedList() {
   }
 
   function removeAt(index) {
-    if (index > size() - 1 || index < 0 || !Number.isInteger(index)) {
+    if (
+      (index > size() - 1 && size() > 0) ||
+      index < 0 ||
+      !Number.isInteger(index)
+    ) {
       console.log('Invalid index.');
       return;
     }
