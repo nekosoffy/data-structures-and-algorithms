@@ -26,12 +26,12 @@ function hashMap() {
     });
 
     if (entriesNumber === capacity * loadFactor) {
-      const entries = entries();
+      const entriesList = entries();
       hashTable = Array(capacity * 2);
 
-      entries.forEach((entry) => {
+      for (const entry of entriesList) {
         set(entry[0], entry[1]);
-      });
+      }
     }
   }
 
