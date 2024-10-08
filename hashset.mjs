@@ -113,4 +113,6 @@ function hashSet() {
     });
     return keys;
   }
+
+  return { hash, checkHashTableGrowth, set, has, length, clear, keys };
 }

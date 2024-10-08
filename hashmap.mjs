@@ -147,4 +147,18 @@ function hashMap() {
     });
     return entries;
   }
+
+  return {
+    hash,
+    checkHashTableGrowth,
+    set,
+    get,
+    has,
+    remove,
+    length,
+    clear,
+    keys,
+    values,
+    entries,
+  };
 }
