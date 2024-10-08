@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-function mergeSort(array) {
+export default function mergeSort(array) {
   if (array.length <= 1) return array;
   let left = array.slice(0, array.length / 2);
   let right = array.slice(array.length / 2);
@@ -30,6 +30,3 @@ function mergeSort(array) {
 
   return merge(left, right);
 }
-
-console.log(mergeSort([3, 2, 1, 13, 8, 5, 0, 1]));
-console.log(mergeSort([105, 79, 100, 110]));
