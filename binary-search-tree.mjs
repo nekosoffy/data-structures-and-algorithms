@@ -53,23 +53,19 @@ function tree(array) {
 
       let currentNode = root();
 
-      if (value === currentNode.data) {
-        return;
-      }
-
       while (
-        currentNode.leftChild !== null ||
-        currentNode.rightChild !== null
+        (currentNode.leftChild !== null || currentNode.rightChild !== null) &&
+        currentNode.data !== value
       ) {
         if (value < currentNode.data) {
           currentNode = currentNode.leftChild;
         } else {
           currentNode = currentNode.rightChild;
         }
+      }
 
-        if (value === currentNode.data) {
-          return;
-        }
+      if (value === currentNode.data) {
+        return;
       }
 
       const leafNode = node(value);
