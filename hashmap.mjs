@@ -26,14 +26,7 @@ function hashMap() {
     });
 
     if (entriesNumber === capacity * loadFactor) {
-      const entries = [];
-
-      hashTable.forEach((bucket) => {
-        for (let i = 0; i < bucket.size(); i++) {
-          entries.push(bucket.at(i).value);
-        }
-      });
-
+      const entries = entries();
       hashTable = Array(capacity * 2);
 
       entries.forEach((entry) => {
