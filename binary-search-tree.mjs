@@ -45,6 +45,45 @@ function tree(array) {
     return firstNode;
   }
 
+  function insert(value) {
+    try {
+      if (!Number.isInteger(value)) {
+        throw new TypeError('Input must be an integer.');
+      }
+
+      let currentNode = root();
+
+      if (value === currentNode.data) {
+        return;
+      }
+
+      while (
+        currentNode.leftChild !== null ||
+        currentNode.rightChild !== null
+      ) {
+        if (value < currentNode.data) {
+          currentNode = currentNode.leftChild;
+        } else {
+          currentNode = currentNode.rightChild;
+        }
+
+        if (value === currentNode.data) {
+          return;
+        }
+      }
+
+      const leafNode = node(value);
+
+      if (value < currentNode.data) {
+        currentNode.leftChild = leafNode;
+      } else {
+        currentNode.rightChild = leafNode;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return { root, insert };
 }
 
