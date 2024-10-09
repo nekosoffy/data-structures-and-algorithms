@@ -8,8 +8,8 @@ function tree(array) {
 
   function buildTree(array) {
     try {
-      if (!Array.isArray(array) || array.length === 0) {
-        throw new TypeError('Input must be a non-empty array.');
+      if (!Array.isArray(array) || !array.every(Number.isInteger)) {
+        throw new TypeError('Input must be an array of integers.');
       }
 
       array = [...new Set(array)];
@@ -181,12 +181,45 @@ function tree(array) {
     }
   }
 
-  return { root, insert, deleteItem, find };
-}
+  function levelOrder(callback) {
+    try {
+      if (typeof callback !== 'function') {
+        throw new TypeError('Input must be a function.');
+      }
 
-const binarySearchTree = tree([
-  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324,
-]);
+      if (firstNode === null) {
+        throw new Error('Tree has no nodes.');
+      }
+
+      const queue = [firstNode];
+
+      function traverse(queue) {
+        if (queue.length === 0) {
+          return;
+        }
+
+        let currentNode = queue.shift();
+        callback(currentNode);
+
+        if (currentNode.leftChild !== null) {
+          queue.push(currentNode.leftChild);
+        }
+
+        if (currentNode.rightChild !== null) {
+          queue.push(currentNode.rightChild);
+        }
+
+        traverse(queue);
+      }
+
+      traverse(queue);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return { root, insert, deleteItem, find, levelOrder };
+}
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
   if (node == null) {
@@ -201,6 +234,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-prettyPrint(binarySearchTree.root());
-binarySearchTree.insert(8);
 prettyPrint(binarySearchTree.root());
