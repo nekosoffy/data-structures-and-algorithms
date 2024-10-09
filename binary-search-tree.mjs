@@ -70,6 +70,31 @@ function tree(array) {
     return nextSmaller;
   }
 
+  function find(value) {
+    try {
+      if (!Number.isInteger(value)) {
+        throw new TypeError('Input must be an integer.');
+      }
+
+      let currentNode = root();
+
+      while (currentNode !== null && currentNode.data !== value) {
+        currentNode =
+          value < currentNode.data
+            ? currentNode.leftChild
+            : currentNode.rightChild;
+      }
+
+      if (currentNode === null) {
+        return "Tree doesn't contain value.";
+      }
+
+      return currentNode;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   function insert(value) {
     try {
       if (!Number.isInteger(value)) {
@@ -176,7 +201,7 @@ function tree(array) {
     }
   }
 
-  return { root, insert, deleteItem };
+  return { root, insert, deleteItem, find };
 }
 
 const binarySearchTree = tree([
@@ -197,3 +222,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 };
 
 prettyPrint(binarySearchTree.root());
+console.log(binarySearchTree.find(67));
