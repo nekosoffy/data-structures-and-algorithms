@@ -103,15 +103,7 @@ function tree(array) {
 
       let currentNode = root();
 
-      if (currentNode === null) {
-        firstNode = node(value);
-        return;
-      }
-
-      while (
-        (currentNode.leftChild !== null || currentNode.rightChild !== null) &&
-        currentNode.data !== value
-      ) {
+      while (currentNode !== null && currentNode.data !== value) {
         if (value < currentNode.data) {
           currentNode = currentNode.leftChild;
         } else {
@@ -119,16 +111,17 @@ function tree(array) {
         }
       }
 
-      if (value === currentNode.data) {
+      if (currentNode === null) {
+        firstNode = node(value);
         return;
+      } else if (currentNode.data === value) {
+        return 'Tree already contains value.';
       }
 
-      const leafNode = node(value);
-
       if (value < currentNode.data) {
-        currentNode.leftChild = leafNode;
+        currentNode.leftChild = node(value);
       } else {
-        currentNode.rightChild = leafNode;
+        currentNode.rightChild = node(value);
       }
     } catch (e) {
       console.error(e);
@@ -209,5 +202,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 };
 
 prettyPrint(binarySearchTree.root());
-binarySearchTree.deleteItem(8);
+binarySearchTree.insert(8);
 prettyPrint(binarySearchTree.root());
