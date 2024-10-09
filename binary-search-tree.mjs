@@ -141,21 +141,8 @@ function tree(array) {
         throw new TypeError('Input must be an integer.');
       }
 
-      let currentNode = root();
+      let currentNode = find(value);
       let parentNode = null;
-
-      while (currentNode !== null && currentNode.data !== value) {
-        parentNode = currentNode;
-        currentNode =
-          value < currentNode.data
-            ? currentNode.leftChild
-            : currentNode.rightChild;
-      }
-
-      // If value is not found.
-      if (currentNode === null) {
-        return "Tree doesn't contain value.";
-      }
 
       const hasLeftChild = currentNode.leftChild !== null;
       const hasRightChild = currentNode.rightChild !== null;
@@ -222,4 +209,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 };
 
 prettyPrint(binarySearchTree.root());
-console.log(binarySearchTree.find(67));
+binarySearchTree.deleteItem(8);
+prettyPrint(binarySearchTree.root());
