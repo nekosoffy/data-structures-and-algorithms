@@ -39,10 +39,35 @@ function tree(array) {
     }
   }
 
-  const firstNode = buildTree(array);
+  let firstNode = buildTree(array);
 
   function root() {
     return firstNode;
+  }
+
+  function replaceChild(parentNode, oldChild, newChild) {
+    if (parentNode.leftChild === oldChild) {
+      parentNode.leftChild = newChild;
+    } else {
+      parentNode.rightChild = newChild;
+    }
+  }
+
+  function findNextSmallerChild(node) {
+    let nextSmaller = node.rightChild;
+    let parentOfNextSmaller = node;
+
+    while (nextSmaller.leftChild !== null) {
+      parentOfNextSmaller = nextSmaller;
+      nextSmaller = nextSmaller.leftChild;
+    }
+
+    if (nextSmaller !== node.rightChild) {
+      parentOfNextSmaller.leftChild = nextSmaller.rightChild;
+      nextSmaller.rightChild = node.rightChild;
+    }
+
+    return nextSmaller;
   }
 
   function insert(value) {
@@ -52,6 +77,11 @@ function tree(array) {
       }
 
       let currentNode = root();
+
+      if (currentNode === null) {
+        firstNode = node(value);
+        return;
+      }
 
       while (
         (currentNode.leftChild !== null || currentNode.rightChild !== null) &&
@@ -80,7 +110,73 @@ function tree(array) {
     }
   }
 
-  return { root, insert };
+  function deleteItem(value) {
+    try {
+      if (!Number.isInteger(value)) {
+        throw new TypeError('Input must be an integer.');
+      }
+
+      let currentNode = root();
+      let parentNode = null;
+
+      while (currentNode !== null && currentNode.data !== value) {
+        parentNode = currentNode;
+        currentNode =
+          value < currentNode.data
+            ? currentNode.leftChild
+            : currentNode.rightChild;
+      }
+
+      // If value is not found.
+      if (currentNode === null) {
+        return "Tree doesn't contain value.";
+      }
+
+      const hasLeftChild = currentNode.leftChild !== null;
+      const hasRightChild = currentNode.rightChild !== null;
+
+      // Case 1: Node to be deleted has no children.
+      if (!hasLeftChild && !hasRightChild) {
+        if (parentNode === null) {
+          firstNode = null;
+        } else {
+          replaceChild(parentNode, currentNode, null);
+        }
+        return;
+      }
+
+      // Case 2: Node to be deleted has one child.
+      if (!hasLeftChild || !hasRightChild) {
+        const child = hasLeftChild
+          ? currentNode.leftChild
+          : currentNode.rightChild;
+
+        if (parentNode === null) {
+          firstNode = child;
+        } else {
+          replaceChild(parentNode, currentNode, child);
+        }
+        return;
+      }
+
+      // Case 3: Node to be deleted has both children.
+      if (hasLeftChild && hasRightChild) {
+        const nextSmallerChild = findNextSmallerChild(currentNode);
+        nextSmallerChild.leftChild = currentNode.leftChild;
+
+        if (parentNode === null) {
+          firstNode = nextSmallerChild;
+        } else {
+          replaceChild(parentNode, currentNode, nextSmallerChild);
+        }
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return { root, insert, deleteItem };
 }
 
 const binarySearchTree = tree([
