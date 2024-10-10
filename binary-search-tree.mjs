@@ -376,25 +376,55 @@ function tree(array) {
   }
 
   function height(node) {
-    if (
-      node === null ||
-      (node.leftChild === null && node.rightChild === null)
-    ) {
-      return 0;
+    try {
+      if (typeof node !== 'object' && node === null) {
+        throw new TypeError('Invalid input.');
+      }
+
+      if (
+        node === null ||
+        (node.leftChild === null && node.rightChild === null)
+      ) {
+        return 0;
+      }
+
+      let heightLeft = 0;
+      let heightRight = 0;
+
+      if (node.leftChild !== null) {
+        heightLeft += height(node.leftChild);
+      }
+
+      if (node.rightChild !== null) {
+        heightRight += height(node.rightChild);
+      }
+
+      return Math.max(heightLeft, heightRight) + 1;
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    let heightLeft = 0;
-    let heightRight = 0;
+  function depth(node) {
+    try {
+      if (typeof node !== 'object' && node === null) {
+        throw new TypeError('Invalid input.');
+      }
+      let currentNode = root();
+      let height = 0;
 
-    if (node.leftChild !== null) {
-      heightLeft += height(node.leftChild);
+      while (currentNode !== null && currentNode !== node) {
+        currentNode =
+          node.data < currentNode.data
+            ? currentNode.leftChild
+            : currentNode.rightChild;
+        height++;
+      }
+
+      return height;
+    } catch (e) {
+      console.error(e);
     }
-
-    if (node.rightChild !== null) {
-      heightRight += height(node.rightChild);
-    }
-
-    return Math.max(heightLeft, heightRight) + 1;
   }
 
   return {
@@ -408,6 +438,7 @@ function tree(array) {
     preOrder,
     postOrder,
     height,
+    depth,
   };
 }
 
