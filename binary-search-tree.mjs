@@ -339,6 +339,43 @@ function tree(array) {
     }
   }
 
+  function postOrder(callback) {
+    try {
+      if (typeof callback !== 'function') {
+        throw new TypeError('Input must be a function.');
+      }
+
+      if (firstNode === null) {
+        throw new Error('Tree has no nodes.');
+      }
+
+      const queue = [firstNode];
+
+      function traverse(queue) {
+        if (queue.length === 0) {
+          return;
+        }
+
+        let currentNode = queue.shift();
+
+        if (currentNode.leftChild !== null) {
+          queue.push(currentNode.leftChild);
+          traverse(queue);
+        }
+
+        if (currentNode.rightChild !== null) {
+          queue.push(currentNode.rightChild);
+          traverse(queue);
+        }
+
+        callback(currentNode);
+      }
+      traverse(queue);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return {
     root,
     insert,
@@ -347,6 +384,7 @@ function tree(array) {
     levelOrder,
     inOrder,
     preOrder,
+    postOrder,
     updateMessage,
   };
 }
