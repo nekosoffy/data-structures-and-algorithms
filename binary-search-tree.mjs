@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import mergeSort from './mergeSort.mjs';
 
-function tree(array) {
+export default function tree(array) {
   function node(data = null) {
     return { data, leftChild: null, rightChild: null };
   }
@@ -103,35 +103,29 @@ function tree(array) {
 
       let currentNode = root();
 
-      while (
-        currentNode.leftChild !== null &&
-        currentNode.rightChild !== null &&
-        currentNode.data !== value
-      ) {
-        if (value < currentNode.data) {
-          currentNode = currentNode.leftChild;
-        } else {
-          currentNode = currentNode.rightChild;
-        }
-      }
-
-      if (currentNode === null && currentNode === firstNode) {
+      if (currentNode === null) {
         firstNode = node(value);
-        return updateMessage();
-      }
-
-      if (currentNode.data === value) {
-        console.log('Tree already contains value.');
         return;
       }
 
-      if (value < currentNode.data) {
-        currentNode.leftChild = node(value);
-      } else {
-        currentNode.rightChild = node(value);
+      while (true) {
+        if (value < currentNode.data) {
+          if (currentNode.leftChild === null) {
+            currentNode.leftChild = node(value);
+            return;
+          }
+          currentNode = currentNode.leftChild;
+        } else if (value > currentNode.data) {
+          if (currentNode.rightChild === null) {
+            currentNode.rightChild = node(value);
+            return;
+          }
+          currentNode = currentNode.rightChild;
+        } else {
+          console.log('Tree already contains value.');
+          return;
+        }
       }
-
-      return updateMessage();
     } catch (e) {
       console.error(e);
     }
@@ -194,7 +188,7 @@ function tree(array) {
         } else {
           replaceChild(parentNode, currentNode, null);
         }
-        return updateMessage(prettyPrint);
+        return;
       }
 
       // Case 2: Node to be deleted has one child.
@@ -208,7 +202,7 @@ function tree(array) {
         } else {
           replaceChild(parentNode, currentNode, child);
         }
-        return updateMessage(prettyPrint);
+        return;
       }
 
       // Case 3: Node to be deleted has both children.
@@ -221,7 +215,7 @@ function tree(array) {
         } else {
           replaceChild(parentNode, currentNode, nextSmallerChild);
         }
-        return updateMessage(prettyPrint);
+        return;
       }
     } catch (e) {
       console.error(e);
@@ -478,7 +472,3 @@ function tree(array) {
     rebalance,
   };
 }
-
-const binarySearchTree = tree([
-  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324,
-]);
