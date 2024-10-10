@@ -451,6 +451,17 @@ function tree(array) {
     return traverse(firstNode).balanced;
   }
 
+  function rebalance() {
+    const array = [];
+
+    function pushNode(node) {
+      array.push(node.data);
+    }
+
+    inOrder(pushNode);
+    firstNode = buildTree(array);
+  }
+
   return {
     root,
     updateMessage,
@@ -464,6 +475,7 @@ function tree(array) {
     height,
     depth,
     isBalanced,
+    rebalance,
   };
 }
 
