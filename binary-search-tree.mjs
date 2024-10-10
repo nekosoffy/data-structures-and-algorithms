@@ -427,6 +427,30 @@ function tree(array) {
     }
   }
 
+  function isBalanced() {
+    function traverse(node) {
+      if (node === null) {
+        return { balanced: true, height: 0 };
+      }
+
+      const left = traverse(node.leftChild);
+      const right = traverse(node.rightChild);
+
+      if (!left.balanced || !right.balanced) {
+        return { balanced: false, height: 0 };
+      }
+
+      const isCurrentBalanced = Math.abs(left.height - right.height) <= 1;
+
+      return {
+        balanced: isCurrentBalanced,
+        height: Math.max(left.height, right.height) + 1,
+      };
+    }
+
+    return traverse(firstNode).balanced;
+  }
+
   return {
     root,
     updateMessage,
@@ -439,6 +463,7 @@ function tree(array) {
     postOrder,
     height,
     depth,
+    isBalanced,
   };
 }
 
