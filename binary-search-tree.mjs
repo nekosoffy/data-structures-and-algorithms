@@ -89,7 +89,6 @@ function tree(array) {
         console.log("Tree doesn't contain value.");
       }
 
-      console.log(currentNode);
       return currentNode;
     } catch (e) {
       console.error(e);
@@ -376,8 +375,31 @@ function tree(array) {
     }
   }
 
+  function height(node) {
+    if (
+      node === null ||
+      (node.leftChild === null && node.rightChild === null)
+    ) {
+      return 0;
+    }
+
+    let heightLeft = 0;
+    let heightRight = 0;
+
+    if (node.leftChild !== null) {
+      heightLeft += height(node.leftChild);
+    }
+
+    if (node.rightChild !== null) {
+      heightRight += height(node.rightChild);
+    }
+
+    return Math.max(heightLeft, heightRight) + 1;
+  }
+
   return {
     root,
+    updateMessage,
     insert,
     deleteItem,
     find,
@@ -385,7 +407,7 @@ function tree(array) {
     inOrder,
     preOrder,
     postOrder,
-    updateMessage,
+    height,
   };
 }
 
