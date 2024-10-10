@@ -303,16 +303,54 @@ function tree(array) {
     }
   }
 
-  return { root, insert, deleteItem, find, levelOrder, updateMessage, inOrder };
+  function preOrder(callback) {
+    try {
+      if (typeof callback !== 'function') {
+        throw new TypeError('Input must be a function.');
+      }
+
+      if (firstNode === null) {
+        throw new Error('Tree has no nodes.');
+      }
+
+      const queue = [firstNode];
+
+      function traverse(queue) {
+        if (queue.length === 0) {
+          return;
+        }
+
+        let currentNode = queue.shift();
+        callback(currentNode);
+
+        if (currentNode.leftChild !== null) {
+          queue.push(currentNode.leftChild);
+          traverse(queue);
+        }
+
+        if (currentNode.rightChild !== null) {
+          queue.push(currentNode.rightChild);
+          traverse(queue);
+        }
+      }
+      traverse(queue);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return {
+    root,
+    insert,
+    deleteItem,
+    find,
+    levelOrder,
+    inOrder,
+    preOrder,
+    updateMessage,
+  };
 }
 
 const binarySearchTree = tree([
   1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324,
 ]);
-
-function print(node) {
-  console.log(node.data);
-}
-
-binarySearchTree.updateMessage();
-binarySearchTree.inOrder(print);
