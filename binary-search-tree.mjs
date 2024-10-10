@@ -45,29 +45,29 @@ function tree(array) {
     return firstNode;
   }
 
-  function replaceChild(parentNode, oldChild, newChild) {
-    if (parentNode.leftChild === oldChild) {
-      parentNode.leftChild = newChild;
-    } else {
-      parentNode.rightChild = newChild;
-    }
+  function updateMessage() {
+    console.log('Updating tree...');
+    prettyPrint();
   }
 
-  function findNextSmallerChild(node) {
-    let nextSmaller = node.rightChild;
-    let parentOfNextSmaller = node;
-
-    while (nextSmaller.leftChild !== null) {
-      parentOfNextSmaller = nextSmaller;
-      nextSmaller = nextSmaller.leftChild;
+  function prettyPrint(node = root(), prefix = '', isLeft = true) {
+    if (node === null) {
+      return;
     }
 
-    if (nextSmaller !== node.rightChild) {
-      parentOfNextSmaller.leftChild = nextSmaller.rightChild;
-      nextSmaller.rightChild = node.rightChild;
+    if (node.rightChild !== null) {
+      prettyPrint(
+        node.rightChild,
+        `${prefix}${isLeft ? '│   ' : '    '}`,
+        false
+      );
     }
 
-    return nextSmaller;
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+
+    if (node.leftChild !== null) {
+      prettyPrint(node.leftChild, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
   }
 
   function find(value) {
@@ -86,9 +86,10 @@ function tree(array) {
       }
 
       if (currentNode === null) {
-        return "Tree doesn't contain value.";
+        console.log("Tree doesn't contain value.");
       }
 
+      console.log(currentNode);
       return currentNode;
     } catch (e) {
       console.error(e);
@@ -103,7 +104,11 @@ function tree(array) {
 
       let currentNode = root();
 
-      while (currentNode !== null && currentNode.data !== value) {
+      while (
+        currentNode.leftChild !== null &&
+        currentNode.rightChild !== null &&
+        currentNode.data !== value
+      ) {
         if (value < currentNode.data) {
           currentNode = currentNode.leftChild;
         } else {
@@ -111,11 +116,14 @@ function tree(array) {
         }
       }
 
-      if (currentNode === null) {
+      if (currentNode === null && currentNode === firstNode) {
         firstNode = node(value);
+        return updateMessage();
+      }
+
+      if (currentNode.data === value) {
+        console.log('Tree already contains value.');
         return;
-      } else if (currentNode.data === value) {
-        return 'Tree already contains value.';
       }
 
       if (value < currentNode.data) {
@@ -123,6 +131,8 @@ function tree(array) {
       } else {
         currentNode.rightChild = node(value);
       }
+
+      return updateMessage();
     } catch (e) {
       console.error(e);
     }
@@ -134,8 +144,46 @@ function tree(array) {
         throw new TypeError('Input must be an integer.');
       }
 
-      let currentNode = find(value);
+      let currentNode = root();
       let parentNode = null;
+
+      while (currentNode !== null && currentNode.data !== value) {
+        parentNode = currentNode;
+        currentNode =
+          value < currentNode.data
+            ? currentNode.leftChild
+            : currentNode.rightChild;
+      }
+
+      // If value is not found.
+      if (currentNode === null) {
+        return "Tree doesn't contain value.";
+      }
+
+      function replaceChild(parentNode, oldChild, newChild) {
+        if (parentNode.leftChild === oldChild) {
+          parentNode.leftChild = newChild;
+        } else {
+          parentNode.rightChild = newChild;
+        }
+      }
+
+      function findNextSmallerChild(node) {
+        let nextSmaller = node.rightChild;
+        let parentOfNextSmaller = node;
+
+        while (nextSmaller.leftChild !== null) {
+          parentOfNextSmaller = nextSmaller;
+          nextSmaller = nextSmaller.leftChild;
+        }
+
+        if (nextSmaller !== node.rightChild) {
+          parentOfNextSmaller.leftChild = nextSmaller.rightChild;
+          nextSmaller.rightChild = node.rightChild;
+        }
+
+        return nextSmaller;
+      }
 
       const hasLeftChild = currentNode.leftChild !== null;
       const hasRightChild = currentNode.rightChild !== null;
@@ -147,7 +195,7 @@ function tree(array) {
         } else {
           replaceChild(parentNode, currentNode, null);
         }
-        return;
+        return updateMessage(prettyPrint);
       }
 
       // Case 2: Node to be deleted has one child.
@@ -161,7 +209,7 @@ function tree(array) {
         } else {
           replaceChild(parentNode, currentNode, child);
         }
-        return;
+        return updateMessage(prettyPrint);
       }
 
       // Case 3: Node to be deleted has both children.
@@ -174,7 +222,7 @@ function tree(array) {
         } else {
           replaceChild(parentNode, currentNode, nextSmallerChild);
         }
-        return;
+        return updateMessage(prettyPrint);
       }
     } catch (e) {
       console.error(e);
@@ -213,6 +261,7 @@ function tree(array) {
       }
 
       traverse(queue);
+      return updateMessage(prettyPrint);
     } catch (e) {
       console.error(e);
     }
@@ -221,17 +270,6 @@ function tree(array) {
   return { root, insert, deleteItem, find, levelOrder };
 }
 
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node == null) {
-    return;
-  }
-  if (node.rightChild !== null) {
-    prettyPrint(node.rightChild, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-  if (node.leftChild !== null) {
-    prettyPrint(node.leftChild, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
-};
-
-prettyPrint(binarySearchTree.root());
+const binarySearchTree = tree([
+  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324,
+]);
