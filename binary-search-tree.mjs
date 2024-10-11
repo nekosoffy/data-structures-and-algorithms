@@ -108,23 +108,35 @@ export default function tree(array) {
         return;
       }
 
-      while (true) {
+      while (currentNode.data !== value) {
         if (value < currentNode.data) {
-          if (currentNode.leftChild === null) {
-            currentNode.leftChild = node(value);
-            return;
+          if (currentNode.leftChild !== null) {
+            currentNode = currentNode.leftChild;
+          } else {
+            break;
           }
-          currentNode = currentNode.leftChild;
         } else if (value > currentNode.data) {
-          if (currentNode.rightChild === null) {
-            currentNode.rightChild = node(value);
-            return;
+          if (currentNode.rightChild !== null) {
+            currentNode = currentNode.rightChild;
+          } else {
+            break;
           }
-          currentNode = currentNode.rightChild;
-        } else {
-          console.log('Tree already contains value.');
-          return;
         }
+      }
+
+      if (currentNode.data === value) {
+        console.log('Tree already contains value.');
+        return;
+      }
+
+      if (currentNode.data > value) {
+        currentNode.leftChild = node(value);
+        return;
+      }
+
+      if (currentNode.data < value) {
+        currentNode.rightChild = node(value);
+        return;
       }
     } catch (e) {
       console.error(e);
