@@ -46,7 +46,7 @@ export default function tree(array) {
   }
 
   function updateMessage() {
-    console.log('Updating tree...');
+    console.log('Updated tree:');
     prettyPrint();
   }
 
