@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 function knightMoves(start, end) {
   try {
     const board = [];
@@ -87,24 +86,34 @@ function knightMoves(start, end) {
     }
 
     function logResult(start, end) {
-      const path = bFSearch(start, end);
-      path.pop();
-      console.log(
-        `You made it to the destination in ${path.length - 1} moves!`,
-      );
+      const path = bFSearch(start, end).reverse();
+
+      if (path.length === 2) {
+        console.log(`You made it to the destination in 1 move!`);
+      } else {
+        console.log(
+          `You made it to the destination in ${path.length - 1} moves!`,
+        );
+      }
+
       console.log(`Here's your trajectory:`);
-      console.log(`Start: (${path.at(-1).join(', ')})`);
-      for (const coordinates of path) {
+
+      if (path.length === 1) {
+        console.log(`Start: (${path[0].join(', ')}) -> End`);
+      } else {
+        console.log(`Start: (${path[0].join(', ')})`);
+      }
+
+      for (const coordinates of path.slice(1)) {
         if (coordinates === path.at(-1)) {
           console.log(
-            `${path.indexOf(coordinates) + 1}: (${coordinates.join(
-              ', ',
-            )}) -> End!`,
+            `${path.indexOf(coordinates)}: (${coordinates.join(', ')}) -> End!`,
           );
           return;
         }
+
         console.log(
-          `${path.indexOf(coordinates) + 1}: (${coordinates.join(', ')})`,
+          `${path.indexOf(coordinates)}: (${coordinates.join(', ')})`,
         );
       }
     }
@@ -114,3 +123,5 @@ function knightMoves(start, end) {
     console.error(e);
   }
 }
+
+knightMoves([0, 0], [0, 0]);
