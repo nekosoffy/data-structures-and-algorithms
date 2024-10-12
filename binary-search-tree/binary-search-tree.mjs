@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import mergeSort from './mergeSort.mjs';
+import mergeSort from '../algorithms/mergeSort.mjs';
 
 export default function tree(array) {
   function node(data = null) {
@@ -59,7 +59,7 @@ export default function tree(array) {
       prettyPrint(
         node.rightChild,
         `${prefix}${isLeft ? '│   ' : '    '}`,
-        false
+        false,
       );
     }
 
