@@ -10,25 +10,23 @@ function knightMoves(start, end) {
       }
     }
 
-    if (
-      !board.some(
-        coordinate => JSON.stringify(coordinate) === JSON.stringify(start),
-      )
-    ) {
+    function compare(firstArray, secondArray) {
+      return (
+        firstArray[0] === secondArray[0] && firstArray[1] === secondArray[1]
+      );
+    }
+
+    if (!board.some(coordinate => compare(coordinate, start))) {
       throw new Error('Invalid initial coordinate!');
     }
 
-    if (
-      !board.some(
-        coordinate => JSON.stringify(coordinate) === JSON.stringify(end),
-      )
-    ) {
+    if (!board.some(coordinate => compare(coordinate, end))) {
       throw new Error('Invalid final coordinate!');
     }
 
-    function movement(start) {
+    function getPossibleMoves(start) {
       const initialPos = start;
-      let possibleEnds = [
+      let possibleMoves = [
         [initialPos[0] - 2, initialPos[1] - 1],
         [initialPos[0] - 2, initialPos[1] + 1],
         [initialPos[0] - 1, initialPos[1] - 2],
@@ -39,8 +37,8 @@ function knightMoves(start, end) {
         [initialPos[0] + 2, initialPos[1] + 1],
       ];
 
-      possibleEnds = possibleEnds.filter(coordinates => {
-        for (let value of coordinates) {
+      possibleMoves = possibleMoves.filter(coordinates => {
+        for (const value of coordinates) {
           if (value < 0 || value > 7) {
             return false;
           }
@@ -49,10 +47,44 @@ function knightMoves(start, end) {
         return true;
       });
 
-      return possibleEnds;
+      return possibleMoves;
     }
 
-    return { movement };
+    function bFSearch(start, end) {
+      const queue = [start];
+      const visited = [start];
+      const path = [];
+
+      function traverse(queue) {
+        if (queue.length === 0) {
+          return;
+        }
+
+        let currentNode = queue.shift();
+
+        if (compare(currentNode, end)) {
+          path.push([currentNode[0], currentNode[1]]);
+          while (currentNode.parentNode) {
+            path.push([currentNode.parentNode[0], currentNode.parentNode[1]]);
+            currentNode = currentNode.parentNode;
+          }
+        }
+
+        const possibleMoves = getPossibleMoves(currentNode);
+
+        for (const coordinate of possibleMoves) {
+          if (!visited.some(square => compare(square, coordinate))) {
+            coordinate.parentNode = currentNode;
+            visited.push(coordinate);
+            queue.push(coordinate);
+            traverse(queue);
+          }
+        }
+      }
+
+      traverse(queue);
+      return path;
+    }
   } catch (e) {
     console.error(e);
   }
