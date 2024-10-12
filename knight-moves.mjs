@@ -85,6 +85,31 @@ function knightMoves(start, end) {
       traverse(queue);
       return path;
     }
+
+    function logResult(start, end) {
+      const path = bFSearch(start, end);
+      path.pop();
+      console.log(
+        `You made it to the destination in ${path.length - 1} moves!`,
+      );
+      console.log(`Here's your trajectory:`);
+      console.log(`Start: (${path.at(-1).join(', ')})`);
+      for (const coordinates of path) {
+        if (coordinates === path.at(-1)) {
+          console.log(
+            `${path.indexOf(coordinates) + 1}: (${coordinates.join(
+              ', ',
+            )}) -> End!`,
+          );
+          return;
+        }
+        console.log(
+          `${path.indexOf(coordinates) + 1}: (${coordinates.join(', ')})`,
+        );
+      }
+    }
+
+    return logResult(start, end);
   } catch (e) {
     console.error(e);
   }
