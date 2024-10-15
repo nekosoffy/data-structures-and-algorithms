@@ -1,6 +1,6 @@
 # Data Structures and Algorithms
 
-Implementations of various data structures and algorithms in JavaScript. Each structure and algorithm is designed to provide a practical understanding of fundamental computer science concepts, and were built with a range of useful functions.
+Implementation of some data structures and algorithms in JavaScript, with the goal of providing a practical understanding of these computer science concepts in a language where the structures don't exist natively. They were built with functions that allow manipulating their elements in various ways.
 
 ## Data Structures
 
@@ -14,8 +14,8 @@ Implementations of various data structures and algorithms in JavaScript. Each st
 
 ## Algorithms
 
-- **Fibonacci sequence:** An implementation of a function that recursively generates The Fibonacci sequence, and returns an array with the given length of terms.
+- **Fibonacci sequence:** An algorithm that recursively generates the Fibonacci sequence and returns an array with the given length of the sequence's terms.
 
 - **Merge sort:** A sorting algorithm that follows the divide and conquer paradigm. It recursively divides the array into halves, sorts them, and then merges them back together.
 
-- **Knight Moves:** This implementation calculates the minimum number of moves a knight needs to reach a destination on a chessboard, using a breadth-first search algorithm.
+- **Knight moves:** An algorithm that calculates the minimum number of moves a knight needs to reach a destination on a chessboard, using a breadth-first search algorithm generalized to a graph data structure.
