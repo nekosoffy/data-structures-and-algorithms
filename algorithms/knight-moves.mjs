@@ -1,39 +1,24 @@
 #!/usr/bin/env node
 function knightMoves(start, end) {
   try {
-    const board = [];
-    for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 8; j++) {
-        const coordinates = [i, j];
-        board.push(coordinates);
-      }
-    }
-
-    function compare(firstArray, secondArray) {
-      return (
-        firstArray[0] === secondArray[0] && firstArray[1] === secondArray[1]
-      );
-    }
-
-    if (!board.some(coordinate => compare(coordinate, start))) {
+    if (start[0] > 7 || start[0] < 0) {
       throw new Error('Invalid initial coordinate!');
     }
 
-    if (!board.some(coordinate => compare(coordinate, end))) {
+    if (start[1] > 7 || start[1] < 0) {
       throw new Error('Invalid final coordinate!');
     }
 
     function getPossibleMoves(start) {
-      const initialPos = start;
       let possibleMoves = [
-        [initialPos[0] - 2, initialPos[1] - 1],
-        [initialPos[0] - 2, initialPos[1] + 1],
-        [initialPos[0] - 1, initialPos[1] - 2],
-        [initialPos[0] - 1, initialPos[1] + 2],
-        [initialPos[0] + 1, initialPos[1] - 2],
-        [initialPos[0] + 1, initialPos[1] + 2],
-        [initialPos[0] + 2, initialPos[1] - 1],
-        [initialPos[0] + 2, initialPos[1] + 1],
+        [start[0] - 2, start[1] - 1],
+        [start[0] - 2, start[1] + 1],
+        [start[0] - 1, start[1] - 2],
+        [start[0] - 1, start[1] + 2],
+        [start[0] + 1, start[1] - 2],
+        [start[0] + 1, start[1] + 2],
+        [start[0] + 2, start[1] - 1],
+        [start[0] + 2, start[1] + 1],
       ];
 
       possibleMoves = possibleMoves.filter(coordinates => {
@@ -47,6 +32,12 @@ function knightMoves(start, end) {
       });
 
       return possibleMoves;
+    }
+
+    function compare(firstArray, secondArray) {
+      return (
+        firstArray[0] === secondArray[0] && firstArray[1] === secondArray[1]
+      );
     }
 
     function bFSearch(start, end) {
@@ -124,4 +115,4 @@ function knightMoves(start, end) {
   }
 }
 
-knightMoves([0, 0], [0, 0]);
+knightMoves([0, 0], [7, 5]);
