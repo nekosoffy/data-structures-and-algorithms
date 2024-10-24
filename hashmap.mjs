@@ -16,14 +16,20 @@ function hashMap() {
     return hashCode;
   }
 
+  function length() {
+    let entries = 0;
+    hashTable.forEach(bucket => {
+      for (let i = 0; i < bucket.size(); i++) {
+        entries++;
+      }
+    });
+    return entries;
+  }
+
   function checkHashTableGrowth() {
     const capacity = hashTable.length;
     const loadFactor = 0.75;
-    let entriesNumber = 0;
-
-    hashTable.forEach((bucket) => {
-      entriesNumber += bucket.size();
-    });
+    let entriesNumber = length();
 
     if (entriesNumber === capacity * loadFactor) {
       const entriesList = entries();
@@ -104,23 +110,13 @@ function hashMap() {
     return false;
   }
 
-  function length() {
-    let entries = 0;
-    hashTable.forEach((bucket) => {
-      for (let i = 0; i < bucket.size(); i++) {
-        entries++;
-      }
-    });
-    return entries;
-  }
-
   function clear() {
     hashTable = Array(hashTable.length);
   }
 
   function keys() {
     const keys = [];
-    hashTable.forEach((bucket) => {
+    hashTable.forEach(bucket => {
       for (let i = 0; i < bucket.size(); i++) {
         keys.push(bucket.at(i).value[0]);
       }
@@ -130,7 +126,7 @@ function hashMap() {
 
   function values() {
     const values = [];
-    hashTable.forEach((bucket) => {
+    hashTable.forEach(bucket => {
       for (let i = 0; i < bucket.size(); i++) {
         values.push(bucket.at(i).value[1]);
       }
@@ -140,7 +136,7 @@ function hashMap() {
 
   function entries() {
     const entries = [];
-    hashTable.forEach((bucket) => {
+    hashTable.forEach(bucket => {
       for (let i = 0; i < bucket.size(); i++) {
         entries.push(bucket.at(i).value);
       }
@@ -148,17 +144,40 @@ function hashMap() {
     return entries;
   }
 
+  function buckets() {
+    hashTable.forEach(bucket => {
+      console.log(bucket.toString());
+    });
+  }
+
   return {
     hash,
+    length,
     checkHashTableGrowth,
     set,
     get,
     has,
     remove,
-    length,
     clear,
     keys,
     values,
     entries,
+    buckets,
   };
 }
+
+const test = hashMap();
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+test.set('moon', 'silver');
+test.buckets();
